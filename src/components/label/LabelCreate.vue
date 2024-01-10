@@ -106,6 +106,7 @@
               this.refresh();
             })
             .catch(err => {
+              console.log("错误",err)
               this.$message.error(err.desc);
             });
       },
