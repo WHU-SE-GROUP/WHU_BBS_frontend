@@ -17,34 +17,34 @@
       <!-- 管理端 -->
       <a-menu-item key="management" @click="routerManagement" v-if="$store.state.collapsed">{{ $t("common.management") }}</a-menu-item>
       <!-- 源码 -->
-      <a-dropdown>
-        <a-menu-item key="course">{{ $t("common.sourceCode") }}</a-menu-item>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item>
-              <a target="_blank" href="https://github.com/maliangnansheng/bbs-springboot">
-                <i class="iconfont icon-GitHub" style="color: #000"></i><b style="color: #000"> {{ $t("common.backEnd") }}</b>{{ $t("common.sourceCode") }}
-              </a>
-            </a-menu-item>
-            <a-menu-item>
-              <a target="_blank" href="https://github.com/maliangnansheng/bbs-vue-ui">
-                <i class="iconfont icon-GitHub" style="color: #000"></i><b style="color: #000"> {{ $t("common.frontEnd") }}</b>{{ $t("common.sourceCode") }}
-              </a>
-            </a-menu-item>
-            <a-divider style="margin: 3px 0 3px 0"/>
-            <a-menu-item>
-              <a target="_blank" href="https://gitee.com/maliangnansheng/bbs-springboot">
-                <i class="iconfont icon-gitee" style="color: #c71d23"></i><b style="color: #000"> {{ $t("common.backEnd") }}</b>{{ $t("common.sourceCode") }}
-              </a>
-            </a-menu-item>
-            <a-menu-item>
-              <a target="_blank" href="https://gitee.com/maliangnansheng/bbs-vue-ui">
-                <i class="iconfont icon-gitee" style="color: #c71d23"></i><b style="color: #000"> {{ $t("common.frontEnd") }}</b>{{ $t("common.sourceCode") }}
-              </a>
-            </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
+<!--      <a-dropdown>-->
+<!--        <a-menu-item key="course">{{ $t("common.sourceCode") }}</a-menu-item>-->
+<!--        <template #overlay>-->
+<!--          <a-menu>-->
+<!--            <a-menu-item>-->
+<!--              <a target="_blank" href="https://github.com/maliangnansheng/bbs-springboot">-->
+<!--                <i class="iconfont icon-GitHub" style="color: #000"></i><b style="color: #000"> {{ $t("common.backEnd") }}</b>{{ $t("common.sourceCode") }}-->
+<!--              </a>-->
+<!--            </a-menu-item>-->
+<!--            <a-menu-item>-->
+<!--              <a target="_blank" href="https://github.com/maliangnansheng/bbs-vue-ui">-->
+<!--                <i class="iconfont icon-GitHub" style="color: #000"></i><b style="color: #000"> {{ $t("common.frontEnd") }}</b>{{ $t("common.sourceCode") }}-->
+<!--              </a>-->
+<!--            </a-menu-item>-->
+<!--            <a-divider style="margin: 3px 0 3px 0"/>-->
+<!--            <a-menu-item>-->
+<!--              <a target="_blank" href="https://gitee.com/maliangnansheng/bbs-springboot">-->
+<!--                <i class="iconfont icon-gitee" style="color: #c71d23"></i><b style="color: #000"> {{ $t("common.backEnd") }}</b>{{ $t("common.sourceCode") }}-->
+<!--              </a>-->
+<!--            </a-menu-item>-->
+<!--            <a-menu-item>-->
+<!--              <a target="_blank" href="https://gitee.com/maliangnansheng/bbs-vue-ui">-->
+<!--                <i class="iconfont icon-gitee" style="color: #c71d23"></i><b style="color: #000"> {{ $t("common.frontEnd") }}</b>{{ $t("common.sourceCode") }}-->
+<!--              </a>-->
+<!--            </a-menu-item>-->
+<!--          </a-menu>-->
+<!--        </template>-->
+<!--      </a-dropdown>-->
       <!-- 关于 -->
       <a-menu-item key="about" @click="routerAbout">{{ $t("common.about") }}</a-menu-item>
       <!-- 国际化 -->

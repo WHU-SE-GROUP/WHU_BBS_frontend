@@ -4,7 +4,7 @@
       <div class="header-right-logo">
         <!-- logo -->
         <div @click="refresh" class="header-item-logo" v-if="!$store.state.collapsed">
-          <img slot="avatar" src="@/assets/img/logo-lanse.png" alt="默认图片" style="height: 100%"/>
+          <img slot="avatar" src="@/assets/img/whu_logo.png" alt="武大标志图片" style="height: 100%"/>
         </div>
 
         <IndexMenu v-if="!$store.state.collapsed"/>

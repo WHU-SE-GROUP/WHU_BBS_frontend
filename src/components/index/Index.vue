@@ -59,7 +59,7 @@
               <a-col :span="24" style="height: 10px;"/>
             </a-row>
             <!-- 友情捐赠 -->
-            <FriendDonate style="background: #fff;"/>
+<!--            <FriendDonate style="background: #fff;"/>-->
             <a-row>
               <a-col :span="24" style="height: 10px;"/>
             </a-row>
@@ -98,7 +98,7 @@ export default {
     FilingInfo,
     CustomEmpty,
     LatestComment,
-    FriendDonate,
+    // FriendDonate,
     ArticleCheck
   },
   data() {

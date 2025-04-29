@@ -5,7 +5,7 @@
     </a-row>
     <a-row>
       <a-col :span="24" style="position: relative; top: -25px; text-align: center">
-        <a-avatar :size="80" :src="require('@/assets/img/nan.jpg')"/>
+        <a-avatar :size="80" :src="require('@/assets/img/whu_logo.jpg')"/>
       </a-col>
       <a-col :span="24" style="text-align: center">
         <div style="line-height: 28px; padding: 0 10px 10px 10px;">
