@@ -1,5 +1,5 @@
 <template>
-  <a-form :model="form" ref="form" :rules="rules" :label-col="{ span: 5 }" :wrapper-col="{ span: 17 }" @submit="handleSubmit">
+  <a-form :model="form" ref="form" :rules="rules" :label-col="{ span: 5 }" :wrapper-col="{ span: 17 }">
     <!-- 添加资源导航 -->
     <a-form-item :label="$t('common.resourceName')" name="resourceName">
       <a-input
@@ -30,7 +30,7 @@
     </a-form-item>
     <a-divider style="margin: 10px 0;"></a-divider>
     <a-form-item class="form-item-submit">
-      <a-button type="primary" html-type="submit">{{ $t('common.sureAndAdd') }}</a-button>
+      <a-button type="primary" html-type="submit" @click="handleSubmit" >{{ $t('common.sureAndAdd') }}</a-button>
     </a-form-item>
   </a-form>
 </template>
@@ -103,34 +103,90 @@ export default {
   },
 
   methods: {
+    // handleSubmit(e) {
+    //   e.preventDefault();
+    //
+    //   this.$refs.form.validateFields().then((values) => {
+    //     // if (!err) {
+    //       const data = {
+    //         "logo": this.resourceLogo,
+    //         "resourceName": this.form.resourceName,
+    //         "category": this.form.category,
+    //         "desc": this.form.desc,
+    //         "link": this.form.link,
+    //       };
+    //       if (this.resourceLogo) {
+    //         // 更新
+    //         if (this.resourceId) {
+    //           data.id = this.resourceId;
+    //           this.resourceUpdate(data);
+    //           // 新增
+    //         } else {
+    //           this.resourceCreate(data);
+    //         }
+    //       } else {
+    //         this.$message.warning('请上传资源导航Logo');
+    //       }
+    //
+    //     // }
+    //   });
+    // },
     handleSubmit(e) {
       e.preventDefault();
+      setTimeout(() => {
+        this.$refs.form
+          .validateFields()
+          .then(async (values) => {
+            // 2. 构建提交数据
+            const data = {
+              logo: this.resourceLogo,
+              resourceName: this.form.resourceName,
+              category: this.form.category,
+              desc: this.form.desc,
+              link: this.form.link,
+            };
 
-      this.$refs.form.validateFields().then((values) => {
-        // if (!err) {
-          const data = {
-            "logo": this.resourceLogo,
-            "resourceName": this.form.resourceName,
-            "category": this.form.category,
-            "desc": this.form.desc,
-            "link": this.form.link,
-          };
-          if (this.resourceLogo) {
-            // 更新
-            if (this.resourceId) {
-              data.id = this.resourceId;
-              this.resourceUpdate(data);
-              // 新增
-            } else {
-              this.resourceCreate(data);
+            // 3. 必填项检查（Logo）
+            if (!this.resourceLogo) {
+              this.$message.warning("请上传资源导航Logo");
+              return;
             }
-          } else {
-            this.$message.warning('请上传资源导航Logo');
-          }
-        // }
-      });
-    },
 
+            try {
+              // 4. 根据资源ID判断操作类型（添加错误边界）
+              if (this.resourceId) {
+                await this.resourceUpdate(data)
+              }
+              else {
+                await this.resourceCreate(data)
+              }
+
+              // 5. 提交成功处理
+              this.$message.success(this.resourceId ? "更新成功" : "创建成功");
+              this.$refs.form.resetFields(); // 重置表单
+              this.$emit("refresh"); // 通知父组件刷新列表
+            } catch (apiError) {
+              // 6. 处理 API 错误
+              console.error("接口错误:", apiError);
+              this.$message.error(apiError.message);
+
+              // 7. 处理数据版本冲突（outOfDate）
+              if (apiError.response?.data?.outOfDate) {
+                this.$confirm("数据已过期，请重新提交", "提示", {
+                  confirmButtonText: "确定",
+                });
+              }
+            }
+          })
+          .catch((validationErrors) => {
+            // 8. 处理表单校验错误
+            console.error("校验失败:", validationErrors);
+            this.$refs.form.setFields(validationErrors); // 高亮错误字段
+          });
+
+      }, 0);
+      // 1. 表单验证（捕获校验错误）
+    },
     // 新增资源导航
     resourceCreate(data) {
       resourceService.resourceCreate(data)
