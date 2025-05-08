@@ -10,6 +10,26 @@
         <!-- 审核拒绝 -->
         <span class="iconfont icon-reviewRejected" v-if="data.state === 0" style="color: red; font-size: 38px;"></span>
       </div>
+      <!-- 热评展示 -->
+      <div class="article-hot-comment" v-if="data.hotComment">
+        <div class="hot-comment-header">
+          <div class="hot-comment-title">
+            <a-icon type="fire" theme="filled" style="color: #ff4d4f; margin-right: 4px;" />
+            <span style="font-weight: 600;">热门评论</span>
+          </div>
+        </div>
+        <div class="hot-comment-content">
+          <div class="hot-comment-user">
+            <a-avatar :size="24" :src="data.hotComment?.picture || require('@/assets/img/default_avatar.png')" />
+            <span class="username" v-if="data.hotComment?.commentUserName">{{ data.hotComment.commentUserName }}</span>
+            <span class="like-count">
+              <a-icon type="like" theme="filled" style="color: #ff4d4f;" />
+              {{ data.hotComment?.likeCount || 0 }} 点赞
+            </span>
+          </div>
+          <div class="hot-comment-text">{{ data.hotComment?.content || '暂无热门评论' }}</div>
+        </div>
+      </div>
       <div class="article-user">
         <div class="author-info-box">
           <a-avatar class="avatar" :src="data.picture ? data.picture : require('@/assets/img/default_avatar.png')"
@@ -75,6 +95,7 @@
   import articleService from "@/service/articleService";
   import userService from "@/service/userService";
   import CustomEmpty from "@/components/utils/CustomEmpty";
+  import commentService from "@/service/commentService";
 
   export default {
     components: {CustomEmpty},
@@ -112,6 +133,21 @@
                   });
                 }, 800);
               }
+
+              // 新增：请求最热评论，只显示点赞数大于0的评论为热评
+              commentService.getCommentByArticleId({
+                articleId: this.data.id,
+                sortRule: 'hottest',
+                currentPage: 1,
+                pageSize: 1
+              }).then(resp => {
+                if (resp.data && resp.data.length > 0 && resp.data[0].likeCount > 0) {
+                  console.log('热评赋值', resp.data[0]);
+                  this.$set(this.data, 'hotComment', resp.data[0]);
+                } else {
+                  this.$set(this.data, 'hotComment', null);
+                }
+              });
 
             })
             .catch(err => {
@@ -331,44 +367,91 @@
   }
 </script>
 
-<style lang="less">
-  #article-detail .article-title {
-    display: flex;
-    //align-items: center;
-    justify-content: space-between;
+<style lang="less" scoped>
+#article-detail {
+  .article-title {
+    margin-bottom: 20px;
+  }
 
-    h1 {
-      font-size: 32px;
-      font-weight: 700;
-      line-height: 1.31;
-      color: #252933;
+  .article-hot-comment {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff8f8;
+    border-radius: 8px;
+    border: 1px solid #ffccc7;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba(255, 77, 79, 0.1);
     }
 
-    h2 {
-      font-weight: 700;
+    .hot-comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .hot-comment-title {
+        display: flex;
+        align-items: center;
+        color: #ff4d4f;
+        font-size: 14px;
+      }
+    }
+
+    .hot-comment-content {
+      .hot-comment-user {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+
+        .username {
+          margin: 0 8px;
+          color: #262626;
+          font-weight: 500;
+        }
+
+        .like-count {
+          color: #ff4d4f;
+          font-size: 13px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+      }
+
+      .hot-comment-text {
+        color: #595959;
+        font-size: 14px;
+        line-height: 1.6;
+        word-break: break-all;
+        padding: 8px;
+        background: #fff;
+        border-radius: 4px;
+      }
     }
   }
 
-  #article-detail .article-user {
+  .article-user {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  #article-detail .author-info-box {
+  .author-info-box {
     display: flex;
   }
 
-  #article-detail .avatar {
+  .avatar {
     cursor: pointer;
   }
 
   /* #article-detail .article-titleMap, .article-content 这样写会窜样式 */
-  #article-detail .article-titleMap {
+  .article-titleMap {
     padding-top: 20px;
   }
 
-  #article-detail .article-content {
+  .article-content {
     padding-top: 20px;
 
     /* 优化文章标题锚点跳转时被顶部导航栏遮挡 */
@@ -385,7 +468,7 @@
   }
 
   /* 关注按钮--start */
-  #article-detail .follow-btn {
+  .follow-btn {
     width: 77px;
     height: 27px;
     border-radius: 2px;
@@ -394,13 +477,13 @@
     justify-content: center;
   }
 
-  #article-detail .follow-btn:hover {
+  .follow-btn:hover {
     background: #37c701;
     border: 1px solid rgba(55, 199, 1, .6) !important;
     color: #fff !important;
   }
 
-  #article-detail .follow-btn-close {
+  .follow-btn-close {
     background: #37c701;
     border: 1px solid rgba(55, 199, 1, .6) !important;
     color: #fff !important;
@@ -412,7 +495,7 @@
     justify-content: center;
   }
 
-  #article-detail .follow-btn-close:hover {
+  .follow-btn-close:hover {
     background: #3ee002;
     border: 1px solid rgba(55, 199, 1, 0.7) !important;
   }
@@ -420,27 +503,27 @@
   /* 关注按钮--end */
 
   /* 代码高亮部分设置样式--start */
-  #article-detail .markdown-body .highlight pre, .markdown-body pre {
+  .markdown-body .highlight pre, .markdown-body pre {
     padding: 0 !important;
   }
 
-  #article-detail .hljs {
+  .hljs {
     padding: 10px;
   }
 
   /* 代码高亮部分设置样式--end */
 
   /* mavon-editor整体样式--start */
-  #article-detail .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+  .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
     padding: 0;
   }
 
-  #article-detail .v-note-wrapper {
+  .v-note-wrapper {
     z-index: 900;
   }
 
   /* 设置mavon-editor的最小高度 */
-  #article-detail .v-note-wrapper.markdown-body.shadow {
+  .v-note-wrapper.markdown-body.shadow {
     min-height: 0;
   }
 
@@ -462,4 +545,5 @@
   }
 
   /* 代码块-复制按钮 */
+}
 </style>

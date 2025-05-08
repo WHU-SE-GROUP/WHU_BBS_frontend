@@ -136,6 +136,29 @@
           <div class="article-content">
             {{ item.content }}
           </div>
+          <!-- 热评展示 -->
+          <div class="article-hot-comment" v-if="item.articleCountDTO && item.articleCountDTO.commentCount > 0">
+            <div class="hot-comment-header">
+              <div class="hot-comment-title">
+                <a-icon type="fire" theme="filled" style="color: #ff4d4f; margin-right: 4px;" />
+                <span style="font-weight: 600;">热门评论</span>
+              </div>
+            </div>
+            <div class="hot-comment-content">
+              <div class="hot-comment-user">
+                <a-avatar :size="24" :src="item.hotComment?.picture || require('@/assets/img/default_avatar.png')" />
+                <span class="username" v-if="item.hotComment?.commentUserName">
+                  <a-icon type="fire" theme="filled" style="color: #ff4d4f; margin-right: 2px; font-size: 14px;" />
+                  {{ item.hotComment.commentUserName }}
+                </span>
+                <span class="like-count">
+                  <a-icon type="like" theme="filled" style="color: #ff4d4f;" />
+                  {{ item.hotComment?.likeCount || 0 }} 点赞
+                </span>
+              </div>
+              <div class="hot-comment-text">{{ item.hotComment?.content || '暂无热门评论' }}</div>
+            </div>
+          </div>
         </a-list-item>
       </template>
 
@@ -149,11 +172,13 @@
 <script>
 import userService from "@/service/userService";
 import articleService from "@/service/articleService";
+import commentService from "@/service/commentService";
 import { EyeOutlined,LikeOutlined,MessageOutlined,EllipsisOutlined,FireOutlined } from '@ant-design/icons-vue';
 import { Modal } from 'ant-design-vue';
 import { nextTick } from 'vue';
 
 export default {
+  name: 'FrontPageArticle',
   props: {
     data: {type: Array, default: []},
     pageSize: {type: Number, default: 0},
@@ -322,104 +347,120 @@ export default {
     routerArticleEdit(articleId) {
       this.$router.push("/edit/" + articleId);
     },
+
+    // 获取文章热评
+    async getHotComment(articleId) {
+      try {
+        const response = await commentService.getCommentByArticleId({
+          articleId: articleId,
+          sortRule: 'hottest',  // 按热度排序
+          currentPage: 1,
+          pageSize: 1
+        });
+        if (response && response.data && response.data.length > 0) {
+          return response.data[0];  // 返回点赞数最多的评论
+        }
+        return null;
+      } catch (error) {
+        console.error('获取热评失败:', error);
+        return null;
+      }
+    },
+
+    // 初始化文章数据
+    async initArticleData() {
+      for (let i = 0; i < this.tempData.length; i++) {
+        const article = this.tempData[i];
+        if (article.articleCountDTO && article.articleCountDTO.commentCount > 0) {
+          const hotComment = await this.getHotComment(article.id);
+          if (hotComment) {
+            this.tempData[i].hotComment = hotComment;
+          }
+        }
+      }
+    }
   },
 
   mounted() {
+    this.initArticleData();
   },
 
   watch: {
-    // data值改变时触发
     data: {
-      handler(newVal, oldVal) {
+      handler(newVal) {
         this.tempData = newVal;
+        this.initArticleData();
       }
     }
   }
-
 };
 </script>
 
-<style lang="less">
-// 浏览量、点赞、评论取消竖杠
-#main-article-content em.ant-list-item-action-split {
-  display: none;
-}
-
-#main-article-content .ant-list-vertical .ant-list-item-action > li:first-child {
-  padding-left: 0;
-}
-
-#main-article-content .ant-list-vertical .ant-list-item-action > li {
-  padding: 0 12px;
-}
-
-#main-article-content .label-titleMap {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-#main-article-content .label-name {
-  color: #8a919f;
-}
-
-#main-article-content .label-name:hover {
-  color: #13c2c2;
-}
-
-#main-article-content .username {
-  display: flex;
-  justify-content: space-between;
-
-  .left {
-    display: flex;
-    align-items: baseline;
+<style lang="less" scoped>
+#main-article-content {
+  .article-content {
+    margin: 10px 0;
+    color: #4a4a4a;
+    line-height: 1.6;
   }
-}
 
-#main-article-content .ant-list-item-meta-description {
-  font-weight: 700;
-  font-size: 16px;
-  color: #1d2129;
-  line-height: 22px;
-}
+  .article-hot-comment {
+    margin: 12px 0;
+    padding: 12px;
+    background: #fff8f8;
+    border-radius: 8px;
+    border: 1px solid #ffccc7;
+    transition: all 0.3s ease;
 
-#main-article-content .ant-list-item-meta-description, .article-content {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-}
+    &:hover {
+      box-shadow: 0 2px 8px rgba(255, 77, 79, 0.1);
+    }
 
-#main-article-content .collectLikeComment:hover {
-  color: #13c2c2;
-}
+    .hot-comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
 
-#main-article-content li.ant-list-item {
-  padding: 20px;
-  // 防止文章内容过长导致的显示异常
-  .ant-list-item-main {
-    // 随意设置一个比较小的值即可
-    width: 50%;
-  }
-}
+      .hot-comment-title {
+        display: flex;
+        align-items: center;
+        color: #ff4d4f;
+        font-size: 14px;
+      }
+    }
 
-#main-article-content li.ant-list-item:hover {
-  background: #f4f5f57a;
-}
+    .hot-comment-content {
+      .hot-comment-user {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
 
-// 文章题图样式调整
-#main-article-content .ant-list-item-extra img {
-  max-height: 113px;
-  max-width: 150px;
-  width: auto;
-}
+        .username {
+          margin: 0 8px;
+          color: #262626;
+          font-weight: 500;
+        }
 
-@media screen and (max-width: 576px) {
-  .ant-list-vertical .ant-list-item-extra {
-    margin: 0 auto 16px;
+        .like-count {
+          color: #ff4d4f;
+          font-size: 13px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+      }
+
+      .hot-comment-text {
+        color: #595959;
+        font-size: 14px;
+        line-height: 1.6;
+        word-break: break-all;
+        padding: 8px;
+        background: #fff;
+        border-radius: 4px;
+      }
+    }
   }
 }
 </style>
