@@ -210,4 +210,5 @@ export default {
     commentDonate: "评论/捐赠",
     pageNotExist: "页面不存在",
     backHome: "返回首页",
+    hotArticles: "热门文章",
 };

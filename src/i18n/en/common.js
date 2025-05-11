@@ -209,5 +209,6 @@ export default {
     backEnd: "back end ",
     commentDonate: "Comment/Donate",
     pageNotExist: "Page Not Exist",
-    backHome: "Back Home",
+    backHome: "Back Home", 
+    hotArticles: "Hot Articles",
 };

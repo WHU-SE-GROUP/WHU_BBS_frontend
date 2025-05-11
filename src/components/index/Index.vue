@@ -48,6 +48,11 @@
             <a-row>
               <a-col :span="24" style="height: 10px;"/>
             </a-row>
+            <!-- 热门文章 -->
+            <HotArticles style="background: #fff;"/>
+            <a-row>
+              <a-col :span="24" style="height: 10px;"/>
+            </a-row>
             <!-- 作者榜 -->
             <AuthorsList style="background: #fff;"/>
             <a-row>
@@ -86,6 +91,7 @@ import CustomEmpty from "@/components/utils/CustomEmpty";
 import LatestComment from "@/components/right/LatestComment";
 import FriendDonate from "@/components/right/FriendDonate";
 import ArticleCheck from "@/components/article/ArticleCheck";
+import HotArticles from "@/components/right/HotArticles";
 
 export default {
   components: {
@@ -99,7 +105,8 @@ export default {
     CustomEmpty,
     LatestComment,
     // FriendDonate,
-    ArticleCheck
+    ArticleCheck,
+    HotArticles,
   },
   data() {
     return {
