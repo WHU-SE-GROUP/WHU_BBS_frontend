@@ -42,6 +42,7 @@ export default {
     pleaseEnterComment: "请输入评论",
     release: "发布",
     update: "更新",
+    docs: "使用指南",
     sureAndRelease: "确定并发布",
     sureAndUpdate: "确定并更新",
     postComment: "发表评论",

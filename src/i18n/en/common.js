@@ -18,6 +18,7 @@ export default {
     searchLabel: "Search Label",
     profile: "profile",
     logOut: "logOut",
+    docs: "Docs",
     accountPasswordLogin: "Account password login",
     userRegister: "UserRegister",
     mobileResetPassword: "Phone Reset Password",
@@ -209,6 +210,6 @@ export default {
     backEnd: "back end ",
     commentDonate: "Comment/Donate",
     pageNotExist: "Page Not Exist",
-    backHome: "Back Home", 
+    backHome: "Back Home",
     hotArticles: "Hot Articles",
 };

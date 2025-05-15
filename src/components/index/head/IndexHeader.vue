@@ -29,6 +29,7 @@
           </div>
         </div>
 
+
         <!-- 管理端 -->
         <div v-if="!$store.state.isLogin && !$store.state.collapsed" class="header-item" @click="routerManage">
           <div class="options">
@@ -45,7 +46,7 @@
                 <p>{{ $t("common.themeColor") }}</p>
                 <div class="color-options">
                   <div @click="changeColor(color)" v-for="color of colorOptions" :key="color"
-                      :style="'background: ' + color">
+                       :style="'background: ' + color">
                     <!-- <a-icon v-if="themeColor === color" style="color: white" type="check"/> -->
                     <CheckOutlined v-if="themeColor === color" fill="white"/>
                   </div>
@@ -92,6 +93,9 @@
                 </a-menu-item>
                 <a-menu-item key="about">
                   <i class="iconfont icon-about"></i>{{ ' ' + $t("common.about") }}
+                </a-menu-item>
+                <a-menu-item key="docs">
+                  <i class="iconfont icon-intro"></i>{{ '  ' + $t("common.docs") }}
                 </a-menu-item>
                 <a-divider style="margin: 3px 0 3px 0"/>
                 <a-menu-item key="management">
@@ -216,6 +220,9 @@ export default {
       if (key === 'about') {
         this.routerAbout();
       }
+      if (key === 'docs') {
+        this.routerDocs();
+      }
       if (key === 'management') {
         this.routerManage();
       }
@@ -266,6 +273,11 @@ export default {
     // 点击跳转到 关于我们 页面
     routerAbout() {
       window.open('/about', '_blank');
+    },
+
+    // 点击跳转到 文档中心 页面
+    routerDocs() {
+      window.open('/docs', '_blank');
     },
 
     // 路由到管理端

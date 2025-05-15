@@ -1,24 +1,16 @@
 <template>
   <div class="div-content">
     <a-row>
-      <a-tooltip placement="bottom">
-        <template #title>
-          {{ $t("common.getTheWord") }}
-        </template>
-        <a-col class="user_agreement" :span="6" @click="designDocument">{{ $t("common.designDocument") }}</a-col>
-      </a-tooltip>
-      <a-col class="user_guidance" :span="6">
-        <a href="https://www.bilibili.com/video/BV1he4y1C7rk?spm_id_from=333.999.0.0&vd_source=d0a5d07985a7fbbfb889c874632343c6" target="_blank">{{ $t("common.userGuidance") }}</a>
+
+
+      <!--  新增：使用文档 -->
+      <a-col class="docs_center" :span="6" @click="routerDocs">
+        {{ $t("common.docs") }}
       </a-col>
-      <a-col class="links" :span="6">
-        <a href="https://juejin.cn/" target="_blank">{{ $t("common.links") }}</a>
-      </a-col>
+
       <a-col class="about_us" :span="6" @click="routerAbout">{{ $t("common.about") }}</a-col>
     </a-row>
-    <a-row>
-      版权 © <a href="/" target="_blank"> 南生论坛 </a>丨
-      <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备19014736号-1 </a>
-    </a-row>
+
   </div>
 </template>
 
@@ -48,6 +40,10 @@ export default {
     // 点击跳转到 关于我们 页面
     routerAbout() {
       window.open('/about', '_blank');
+    },
+
+    routerDocs() {
+      window.open('/docs', '_blank');
     }
   }
 }

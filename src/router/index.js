@@ -97,6 +97,11 @@ const routes = [
         component: () => import("@/components/index/About"),
     },
     {
+        path: "/docs",
+        name: "docs",
+        component: () => import("@/components/index/Docs"),
+    },
+    {
         path: "/commentDonate",
         name: "commentDonate",
         component: () => import("@/components/index/CommentDonateIndex"),

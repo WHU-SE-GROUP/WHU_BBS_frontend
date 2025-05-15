@@ -7,84 +7,68 @@
           <div style="background: #fff; margin-bottom: 10px">
             <section class="mission">
               <div class="inner">
+                <!-- 使命 -->
                 <div class="mission-content">
                   <div class="title">我们的使命</div>
-                  <div class="sub">南生论坛，个人程序人生的点滴记录和时光储备。淡泊明志，宁静致远。珍惜原创，矢志不渝。</div>
+                  <div class="sub">武大论坛，个人程序人生的点滴记录和时光储备。淡泊明志，宁静致远。珍惜原创，矢志不渝。</div>
                 </div>
+
+                <!-- 愿景 -->
                 <div class="vision-content">
                   <div class="title">我们的愿景</div>
                   <div class="sub">
-                    让所有迷失方向的同学找到前进的小路<br>
-                    让需要提升技术的同学能有所收获<br>
-                    让同学们有一个学习知识、分享技术的地方
+                    打造一个开放、自由、可信的校园互动社区<br>
+                    为技术学习、信息交流、思想碰撞提供可靠平台<br>
+                    引导积极表达，沉淀优质内容
                   </div>
                 </div>
-                <div class="author-content">
-                  <div class="title">作者</div>
-                  <div class="sub">马亮南生（maliangnansheng）</div>
-                  <img title="微信" src="https://aid.nanshengbbs.top/default/wx-mlns.png" width="50%"/>
-                  <img title="QQ" src="https://aid.nanshengbbs.top/default/qq-mlns.jpg" width="50%"/>
+
+                <!-- 项目背景 -->
+                <div class="origin-content">
+                  <div class="title">项目背景</div>
+                  <div class="sub">
+                    基于南生论坛开源项目改造升级，结合武汉大学校园环境进行本地化定制开发，<br>
+                    旨在替代传统群聊工具，构建更具结构性、可检索性、持久化的校园社区平台。
+                  </div>
                 </div>
+
+                <!-- 作者 -->
+                <div class="author-content">
+                  <div class="title">开发者</div>
+                  <div class="sub">
+                    本项目由武汉大学软件学院学生基于兴趣与实践推动独立开发完成，持续优化中。
+                  </div>
+                </div>
+
+                <!-- 功能介绍 -->
+                <div class="feature-content">
+                  <div class="title">核心功能</div>
+                  <div class="sub">
+                    - 多板块社区自由发帖，支持标签、话题过滤<br>
+                    - 匿名/实名发帖机制，保护表达与隐私<br>
+                    - 自适应移动端访问，响应式布局优化<br>
+                    - 后台管理系统支持内容、用户、权限配置
+                  </div>
+                </div>
+
+                <!-- 源码地址 -->
                 <div class="code-content">
                   <div class="title">源码地址</div>
-                  <div class="sub">后端源码(GitHub)：<a target="_blank"
-                                                   href="https://github.com/maliangnansheng/bbs-springboot">bbs-springboot</a>
-                  </div>
-                  <div class="sub">前端源码(GitHub)：<a target="_blank" href="https://github.com/maliangnansheng/bbs-vue-ui">bbs-vue-ui</a>
-                  </div>
-                  <div class="sub">后端源码(Gitee)：<a target="_blank"
-                                                  href="https://gitee.com/maliangnansheng/bbs-springboot">bbs-springboot</a>
-                  </div>
-                  <div class="sub">前端源码(Gitee)：<a target="_blank" href="https://gitee.com/maliangnansheng/bbs-vue-ui">bbs-vue-ui</a>
-                  </div>
+                  <div class="sub">后端源码（GitHub）：<a target="_blank" href="https://github.com/WHU-SE-GROUP/WHU_BBS_backend">WHU_BBS_backend</a></div>
+                  <div class="sub">前端源码（GitHub）：<a target="_blank" href="https://github.com/WHU-SE-GROUP/WHU_BBS_frontend">WHU_BBS_frontend</a></div>
                 </div>
+
+
                 <div class="code-content">
-                  <div class="title">学习路线</div>
+                  <div class="title">使用指南</div>
                   <div class="sub">
-                    <a target="_blank" href="https://bbs.nanshengbbs.top/detail/158">Java学习路线</a>
-                    <br>
-                    <a target="_blank" href="https://bbs.nanshengbbs.top/detail/159">前端学习路线</a>
+                    <router-link to="/docs">  使用指南</router-link>
                   </div>
+
                 </div>
-                <div class="code-content">
-                  <div class="title">信息统一整理</div>
-                  <div class="sub">
-                    设计文档(论文)：
-                    <a target="_blank"
-                       href="https://76.nanshengbbs.top/doc/%E5%8D%97%E7%94%9F%E8%AE%BA%E5%9D%9B%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0.doc">南生论坛设计文档</a>
-                  </div>
-                  <div class="sub">
-                    日常迭代：
-                    <a target="_blank" href="https://bbs.nanshengbbs.top/detail/122">南生论坛日常迭代</a>
-                  </div>
-                  <div class="sub" style="color: #cb2222">
-                    【商用】需看：
-                    <a target="_blank" href="https://bbs.nanshengbbs.top/detail/171">南生运营的理念</a>
-                  </div>
-                  <div class="sub">
-                    安装部署教程：
-                    <br>
-                    <a target="_blank" href="https://bbs.nanshengbbs.top/detail/44">【后端】安装部署教程</a>
-                    <br>
-                    <a target="_blank" href="https://bbs.nanshengbbs.top/detail/45">【前端】安装部署教程</a>
-                  </div>
-                  <div class="sub">
-                    视频教程：
-                    <br>
-                    <a target="_blank"
-                       href="https://www.bilibili.com/video/BV1pK411C7T4/?spm_id_from=333.999.0.0&vd_source=d0a5d07985a7fbbfb889c874632343c6">南生论坛代码讲解视频</a>
-                    <br>
-                    <a target="_blank"
-                       href="https://www.bilibili.com/video/BV1he4y1C7rk/?spm_id_from=333.999.0.0&vd_source=d0a5d07985a7fbbfb889c874632343c6">南生论坛使用指南视频</a>
-                  </div>
-                  <div class="sub">
-                    南生闲聊：
-                    <br>
-                    <a target="_blank" href="https://76.nanshengbbs.top/jar/chat/ns-chat.zip">南生闲聊项目源码</a>
-                    <br>
-                    <a target="_blank" href="https://bbs.nanshengbbs.top/detail/71">南生闲聊教程</a>
-                  </div>
-                </div>
+
+
+
               </div>
             </section>
           </div>
@@ -101,21 +85,18 @@ import FooterButtons from "@/components/utils/FooterButtons";
 
 export default {
   name: "About",
-
-  components: {IndexHeader, FooterButtons},
+  components: { IndexHeader, FooterButtons },
 
   mounted() {
-    // 滚动条恢复初始位置的方法
     this.$nextTick(() => {
       let dom = document.querySelector('#app');
       if (dom !== null) {
         dom.scrollTop = 0;
       }
-    })
+    });
   }
 };
 </script>
-
 
 <style lang="less">
 #about-index {
@@ -144,20 +125,29 @@ export default {
   }
 
   .mission {
-    padding: 30px 30px;
+    padding: 30px;
     box-sizing: border-box;
 
     .title {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: bold;
+      margin-top: 20px;
     }
 
     .sub {
       margin: 10px 0;
-      font-size: 16px;
-      color: #999;
+      font-size: 15px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    a {
+      color: #1890ff;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   }
 }
-
 </style>
