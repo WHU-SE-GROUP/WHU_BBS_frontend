@@ -71,6 +71,11 @@
       <FooterButtons v-if="!$store.state.collapsed"/>
     </a-layout>
   </a-layout>
+  <div
+  style="position: fixed; right: 20px; bottom: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 6px 14px; font-size: 14px; z-index: 9999;"
+>
+  本页访问次数：{{ visitCount }}
+</div>
 </template>
 
 <script>
@@ -110,6 +115,7 @@ export default {
       finish: false,
       params: {currentPage: 1, pageSize: 12},
       searchContent: '',
+      visitCount:1,
     };
   },
 
@@ -271,6 +277,7 @@ export default {
     this.getArticleList(this.params);
     // 监听滚动，做滚动加载
     this.$utils.scroll.call(this, document.querySelector('#app'));
+    this.visitCount = (window.__visitCount__ = (window.__visitCount__ || 0) + 1);
   },
 
   watch: {
