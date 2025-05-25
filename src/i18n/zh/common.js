@@ -212,4 +212,10 @@ export default {
     pageNotExist: "页面不存在",
     backHome: "返回首页",
     hotArticles: "热门文章",
+    history: '浏览历史',
+    clearHistory: '清空历史',
+    confirmClearHistory: '确定要清空所有浏览历史吗？',
+    justNow: '刚刚',
+    minutesAgo: '分钟前',
+    hoursAgo: '小时前',
 };

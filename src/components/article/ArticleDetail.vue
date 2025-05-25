@@ -96,9 +96,12 @@
   import userService from "@/service/userService";
   import CustomEmpty from "@/components/utils/CustomEmpty";
   import commentService from "@/service/commentService";
+  import { mapState } from 'vuex';
+  import BrowseHistory from "@/components/user/BrowseHistory";
 
   export default {
-    components: {CustomEmpty},
+    name: "ArticleDetail",
+    components: {CustomEmpty, BrowseHistory},
 
     data() {
       return {
@@ -148,6 +151,9 @@
                   this.$set(this.data, 'hotComment', null);
                 }
               });
+
+              // 添加浏览记录
+              this.addBrowseHistory(res.data);
 
             })
             .catch(err => {
@@ -335,6 +341,34 @@
           });
         });
       },
+
+      // 添加浏览记录
+      addBrowseHistory(article) {
+        const history = JSON.parse(localStorage.getItem('browse_history') || '[]');
+        const index = history.findIndex(item => item.postId === article.id);
+        
+        if (index > -1) {
+          // 更新已存在的记录
+          history[index].lastViewTime = Date.now();
+          history.splice(index, 1);
+          history.unshift(history[index]);
+        } else {
+          // 添加新记录
+          history.unshift({
+            postId: article.id,
+            title: article.title,
+            thumbnail: article.coverImage,
+            lastViewTime: Date.now()
+          });
+        }
+        
+        // 限制记录数量
+        if (history.length > 100) {
+          history.pop();
+        }
+        
+        localStorage.setItem('browse_history', JSON.stringify(history));
+      }
     },
 
     mounted() {

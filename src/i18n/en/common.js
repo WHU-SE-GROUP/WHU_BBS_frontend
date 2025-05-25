@@ -212,4 +212,10 @@ export default {
     pageNotExist: "Page Not Exist",
     backHome: "Back Home",
     hotArticles: "Hot Articles",
+    history: 'Browse History',
+    clearHistory: 'Clear History',
+    confirmClearHistory: 'Are you sure you want to clear all browse history?',
+    justNow: 'Just now',
+    minutesAgo: 'minutes ago',
+    hoursAgo: 'hours ago',
 };
