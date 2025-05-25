@@ -315,32 +315,27 @@ export default {
 
     // 路由到文章详情页面
     routerArticleDetail(articleId) {
-      let routeData = this.$router.resolve("/detail/" + articleId);
-      window.open(routeData.href, '_blank');
+      this.$router.push("/detail/" + articleId);
     },
 
     // 路由到文章详情页面（评论处）
     routerArticleDetailToComment(articleId) {
-      let routeData = this.$router.resolve("/detail/" + articleId + '#article-comment-all');
-      window.open(routeData.href, '_blank');
+      this.$router.push("/detail/" + articleId + '#article-comment-all');
     },
 
     // 路由到用户中心页面
     routerUserCenter(userId) {
-      let routeData = this.$router.resolve("/user/" + userId);
-      window.open(routeData.href, '_blank');
+      this.$router.push("/user/" + userId);
     },
 
     // 路由到标签文章页面
     routerLabelToArticle(labelId) {
-      let routeData = this.$router.resolve("/label/" + labelId);
-      window.open(routeData.href, '_blank');
+      this.$router.push("/label/" + labelId);
     },
 
     // 路由到Book说明页面
     routerBook() {
-      let routeData = this.$router.resolve("/book");
-      window.open(routeData.href, '_blank');
+      this.$router.push("/book");
     },
 
     // 路由到文章编辑页面

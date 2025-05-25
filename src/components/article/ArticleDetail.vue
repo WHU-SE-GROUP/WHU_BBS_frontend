@@ -110,16 +110,24 @@
     methods: {
       // 获取文章详细信息
       getArticleById() {
+       
         this.finish = false;
+        console.log('getArticleById');
         articleService.getArticleById({id: this.$route.params.id, isPv: true})
             .then(res => {
               this.data = res.data;
               this.finish = true;
+              console.log('getArticleById res.data', res.data);
+               // 新增：记录浏览历史
+              //console.log('saveViewHistory', res.data);
+              this.saveViewHistory(res.data);
               // 提取标签id
               let labelIds = [];
+              //console.log('res.data.labelDTOS', res.data.labelDTOS);
               res.data.labelDTOS.forEach(label => {
                 labelIds.push(label.id);
               });
+              //console.log('initLabelIds', labelIds, this.finish, res.data.createUser, this.$utils.toToc(res.data.html));
               this.$emit("initLabelIds", labelIds, this.finish, res.data.createUser, this.$utils.toToc(res.data.html));
 
               if (res.data.html) {
@@ -133,8 +141,10 @@
                   });
                 }, 800);
               }
+             
 
               // 新增：请求最热评论，只显示点赞数大于0的评论为热评
+              //console.log('getCommentByArticleId');
               commentService.getCommentByArticleId({
                 articleId: this.data.id,
                 sortRule: 'hottest',
@@ -148,6 +158,8 @@
                   this.$set(this.data, 'hotComment', null);
                 }
               });
+
+              
 
             })
             .catch(err => {
@@ -335,9 +347,42 @@
           });
         });
       },
+
+      // 新增：保存浏览历史到localStorage
+      saveViewHistory(post) {
+        console.log('saveViewHistory', post);
+        if (!post || !post.id) return;
+        const key = 'forumViewHistory';
+        let history = [];
+        try {
+          history = JSON.parse(localStorage.getItem(key))?.posts || [];
+        } catch (e) {}
+        // 生成摘要
+        let preview = '';
+        if (post.markdown) {
+          preview = post.markdown.replace(/[#*>\-\n\r]/g, '').slice(0, 50);
+        } else if (post.content) {
+          preview = post.content.replace(/[#*>\-\n\r]/g, '').slice(0, 50);
+        }
+        // 格式化时间
+        const pad = n => n < 10 ? '0' + n : n;
+        const d = new Date();
+        const timestamp = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        // 查重
+        history = history.filter(item => item.id !== post.id);
+        history.unshift({
+          id: post.id,
+          title: post.title,
+          preview,
+          timestamp
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        localStorage.setItem(key, JSON.stringify({ posts: history }));
+      },
     },
 
     mounted() {
+      console.log('mounted');
       this.getArticleById();
     },
 

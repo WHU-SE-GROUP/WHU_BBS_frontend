@@ -55,8 +55,9 @@ export default {
 
     // 路由到文章详情页面
     routerArticleDetail(articleId) {
-      let routeData = this.$router.resolve("/detail/" + articleId);
-      window.open(routeData.href, '_blank');
+      //let routeData = this.$router.resolve("/detail/" + articleId);
+      //window.open(routeData.href, '_blank');
+      this.$router.push("/detail/" + articleId);
     },
   },
 

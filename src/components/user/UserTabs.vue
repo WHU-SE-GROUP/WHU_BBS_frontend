@@ -68,6 +68,15 @@
             @refresh="likeRefresh"
             style="background: #fff;"/>
       </a-tab-pane>
+      <a-tab-pane key="history">
+        <template #tab>
+          <span slot="tab">
+            <i class="iconfont icon-history"></i>
+            {{ $t("common.history") }}
+          </span>
+        </template>
+        <ViewHistoryPanel v-if="isHistoryTab" ref="viewHistoryPanel" />
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -79,11 +88,12 @@ import FollowTabs from "@/components/user/FollowTabs";
 import userService from "@/service/userService";
 import dynamicService from "@/service/dynamicService";
 import Dynamic from "@/components/user/Dynamic";
+import ViewHistoryPanel from "@/components/user/ViewHistoryPanel";
 
 export default {
   name: "",
 
-  components: {Dynamic, FrontPageArticle, FollowTabs},
+  components: {Dynamic, FrontPageArticle, FollowTabs, ViewHistoryPanel},
 
   props: {
     userId: {type: Number, default: 0},
@@ -122,7 +132,9 @@ export default {
       followedTotal: 0,
       // 我的粉丝数
       fanTotal: 0,
-      activeKey:'dynamic'
+      activeKey:'dynamic',
+      // 是否在历史tab下
+      isHistoryTab: false,
     };
   },
 
@@ -279,6 +291,7 @@ export default {
         this.isArticleTab = false;
         this.isLikeTab = false;
         this.isFollowTab = false;
+        this.isHistoryTab = false;
         this.hasNext = true;
         this.getDynamicList(this.params);
         // 解決和mounted()滚动加载重复的问题
@@ -295,6 +308,7 @@ export default {
         this.isArticleTab = true;
         this.isLikeTab = false;
         this.isFollowTab = false;
+        this.isHistoryTab = false;
         this.hasNext = true;
         this.getPersonalArticles(this.params);
         // 解決和mounted()滚动加载重复的问题
@@ -310,6 +324,7 @@ export default {
         this.isArticleTab = false;
         this.isLikeTab = true;
         this.isFollowTab = false;
+        this.isHistoryTab = false;
         this.hasNext = true;
         this.getLikesArticle(this.params);
         // 解決和mounted()滚动加载重复的问题
@@ -325,6 +340,19 @@ export default {
         this.isArticleTab = false;
         this.isLikeTab = false;
         this.isFollowTab = true;
+        this.isHistoryTab = false;
+      }
+      if (activeKey === 'history') {
+        this.activeKey = 'history';
+        this.isDynamicTab = false;
+        this.isArticleTab = false;
+        this.isLikeTab = false;
+        this.isFollowTab = false;
+        this.isHistoryTab = true;
+        // 这里加上刷新
+        this.$nextTick(() => {
+          this.$refs.viewHistoryPanel && this.$refs.viewHistoryPanel.loadHistory();
+        });
       }
     },
 

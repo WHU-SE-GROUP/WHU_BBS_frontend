@@ -45,8 +45,9 @@ export default {
 
     // 路由到文章详情页面（某一条评论处）
     routerArticleDetail(articleId, commentId) {
-      let routeData = this.$router.resolve("/detail/" + articleId + "#reply-" + commentId);
-      window.open(routeData.href, '_blank');
+      //let routeData = 
+      this.$router.push("/detail/" + articleId + "#reply-" + commentId);
+      //window.open(routeData.href, '_blank');
     },
   },
 
