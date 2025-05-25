@@ -69,6 +69,11 @@
       <FooterButtons v-if="!$store.state.collapsed" />
     </a-layout>
   </a-layout>
+  <div
+    style="position: fixed; right: 20px; bottom: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 6px 14px; font-size: 14px; z-index: 9999;"
+  >
+    本页访问次数：{{ visitCount }}
+  </div>
 </template>
 
 <script>
@@ -78,6 +83,12 @@ import FooterButtons from "@/components/utils/FooterButtons";
 export default {
   name: "Docs",
   components: { IndexHeader, FooterButtons },
+  data() {
+    return {
+      // 加载中...
+      visitCount:1,
+    };
+  },
   mounted() {
     this.$nextTick(() => {
       let dom = document.querySelector('#app');
@@ -85,6 +96,12 @@ export default {
         dom.scrollTop = 0;
       }
     });
+    this.$utils.scroll.call(this, document.querySelector('#app'));
+    const key = "visitCount_" + window.location.pathname;
+    let count = parseInt(localStorage.getItem(key) || "0", 10);
+    count += 1;
+    localStorage.setItem(key, count);
+    this.visitCount = count;
   }
 };
 </script>

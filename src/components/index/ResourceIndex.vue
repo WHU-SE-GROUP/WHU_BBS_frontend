@@ -10,6 +10,11 @@
     </a-layout-content>
     <FooterButtons v-if="!$store.state.collapsed"/>
   </a-layout>
+   <div
+    style="position: fixed; right: 20px; bottom: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 6px 14px; font-size: 14px; z-index: 9999;"
+  >
+    本页访问次数：{{ visitCount }}
+  </div>
 </template>
 
 <script>
@@ -27,6 +32,7 @@
         hasNext: false,
         finish: false,
         params: {currentPage: 1, pageSize: 32},
+        visitCount:1,
       };
     },
 
@@ -72,6 +78,11 @@
       this.getResourceList(this.params);
       // 监听滚动，做滚动加载
       this.$utils.scroll.call(this, document.querySelector('#app'));
+      const key = "visitCount_" + window.location.pathname;
+      let count = parseInt(localStorage.getItem(key) || "0", 10);
+      count += 1;
+      localStorage.setItem(key, count);
+      this.visitCount = count;
     },
 
   };
