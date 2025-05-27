@@ -39,7 +39,7 @@ export default {
     return {
       historyList: [],
       clearModalVisible: false,
-      emptyImg: 'E:/Downloads/empty-history.png',
+      emptyImg: require('@/assets/img/empty-history.png'),
     };
   },
   methods: {
