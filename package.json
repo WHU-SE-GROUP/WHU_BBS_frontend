@@ -19,6 +19,7 @@
     "less-loader": "^7.0.2",
     "mavon-editor": "3.0.1",
     "moment": "^2.29.1",
+    "openai": "^4.103.0",
     "qs": "^6.10.3",
     "serve": "^11.3.2",
     "uglifyjs-webpack-plugin": "^2.2.0",

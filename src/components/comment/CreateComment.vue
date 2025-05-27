@@ -84,7 +84,7 @@ export default {
             this.$emit("refresh");
           })
         .catch(err => {
-            console.log("错误")
+            console.log("err:"+err)
             this.$message.error(err.desc);
           });
     }

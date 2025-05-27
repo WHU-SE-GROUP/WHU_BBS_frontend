@@ -192,6 +192,12 @@ export default {
       } catch (error) {
         // 不再自动切换到本地模式
         // 显示详细错误信息
+        if ( error.choices && error.choices.length > 0 && error.choices[0].message) {
+          this.previewComment = error.choices[0].message.content;
+          return
+        } else {
+          throw new Error('API返回数据格式不符合预期');
+        }
         let errorMessage = '未知错误';
         if (error.response) {
           errorMessage = `服务器错误 (${error.response.status})`;

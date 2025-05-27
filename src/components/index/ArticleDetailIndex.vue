@@ -82,6 +82,7 @@
   import AuthorBlock from "@/components/right/AuthorBlock";
   import RelatArticle from "@/components/right/RelatArticle";
   import Toc from "@/components/right/MarkdownToc";
+  import articleService from "@/service/articleService";
 
   export default {
     components: {
@@ -137,8 +138,26 @@
       // 刷新文章评论
       refreshArticle() {
         // 刷新评论计数等信息
-        this.getArticleCountByArticleId();
-      }
+        this.refresh()
+      },
+
+      // 获取文章评论数等统计信息
+      async getArticleCountByArticleId() {
+        try {
+          const articleId = this.$route.params.id;
+          const res = await articleService.getArticleCountById({ id:articleId });
+          if (res.data.success) {
+            // 更新评论数
+            this.articleCommentCount = res.data.model.commentCount;
+            // 通知左侧按钮组件更新数据
+            if (this.$refs.child) {
+              this.$refs.child.updateCounts(res.data.model);
+            }
+          }
+        } catch (error) {
+          console.error('获取文章统计数据失败:', error);
+        }
+      },
     }
 
   };

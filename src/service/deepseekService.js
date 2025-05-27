@@ -83,43 +83,32 @@ const corsProxies = [
 
 export default {
   // 调用DeepSeek API生成评论
-  generateComment(data) {
+  async generateComment(data) {
     // 检查是否使用本地模拟模式
-    const useMockMode = data.useMockMode === true;
+    // const useMockMode = data.useMockMode === true;
     
-    if (useMockMode) {
-      return new Promise((resolve) => {
-        // 模拟网络延迟
-        setTimeout(() => {
-          resolve({
-            data: {
-              choices: [{
-                message: {
-                  content: enhancedMockComment(data.articleContent, data.style)
-                }
-              }]
-            }
-          });
-        }, 800); // 减少延迟时间
-      });
-    }
-    
-    // 尝试API调用（支持多种CORS代理）
-    return new Promise((resolve, reject) => {
+    // if (useMockMode) {
+    //   return new Promise((resolve) => {
+    //     // 模拟网络延迟
+    //     setTimeout(() => {
+    //       resolve({
+    //         data: {
+    //           choices: [{
+    //             message: {
+    //               content: enhancedMockComment(data.articleContent, data.style)
+    //             }
+    //           }]
+    //         }
+    //       });
+    //     }, 800); // 减少延迟时间
+    //   });
+    // }
+
+    try {
       console.log('准备发送DeepSeek API请求...');
-      
-      // 设置较长的超时时间，满足用户需求
-      const timeout = 60000; // 1分钟超时
-      
-      // 选择CORS代理
-      const proxyIndex = parseInt(localStorage.getItem('corsProxyIndex') || '0');
-      const corsProxy = corsProxies[proxyIndex % corsProxies.length];
-      localStorage.setItem('corsProxyIndex', (proxyIndex + 1) % corsProxies.length);
-      
-      // 准备API调用数据
-      const apiUrl = 'https://api.deepseek.com/v1/chat/completions';
-      const requestData = {
-        model: "deepseek-chat", // DeepSeek-V3
+
+      const response = await axios.post('https://api.deepseek.com/chat/completions', {
+        model: "deepseek-chat",
         messages: [
           {
             role: "system",
@@ -130,80 +119,59 @@ export default {
             content: `请对以下文章内容生成评论：\n${data.articleContent}`
           }
         ],
-        temperature: 0.7,
-        max_tokens: 300
-      };
-      
-      // 直接使用表单数据进行请求 - 避免CORS预检请求
-      const formData = new FormData();
-      formData.append('model', 'deepseek-chat');
-      formData.append('messages', JSON.stringify(requestData.messages));
-      formData.append('temperature', 0.7);
-      formData.append('max_tokens', 300);
-      
-      // 尝试使用第一个代理 - 使用更快的超时设置
-      axios.get(`${corsProxy}${apiUrl}?model=deepseek-chat&max_tokens=300`, {
-        timeout: timeout,
-        withCredentials: false,
+        temperature: 0.7
+      }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${data.apiKey}`
-        }
-      })
-      .then(res => {
-        console.log('API请求成功:', res);
-        resolve(res);
-      })
-      .catch(err => {
-        console.warn('GET请求失败，尝试POST请求:', err);
-        
-        // 检查错误对象中是否包含有效的API响应（某些代理可能在错误对象中包装了成功响应）
-        if (err.response && err.response.data && err.response.data.choices) {
-          console.log('在错误对象中发现有效的API响应:', err.response.data);
-          resolve({ data: err.response.data });
-          return;
-        }
-        
-        // 特殊情况：如果err本身看起来像一个API响应（如包含id, choices等）
-        if (err && err.id && err.choices && Array.isArray(err.choices)) {
-          console.log('在错误对象本身发现有效的API响应:', err);
-          resolve({ data: err });
-          return;
-        }
-        
-        // 尝试POST请求
-        axios.post(corsProxy + apiUrl, requestData, {
-          timeout: timeout,
-          withCredentials: false,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${data.apiKey}`
-          }
-        })
-        .then(res => {
-          console.log('通过POST请求成功:', res);
-          resolve(res);
-        })
-        .catch(err => {
-          // 再次检查错误对象中是否包含有效的API响应
-          if (err.response && err.response.data && err.response.data.choices) {
-            console.log('在POST错误对象中发现有效的API响应:', err.response.data);
-            resolve({ data: err.response.data });
-            return;
-          }
-          
-          // 特殊情况：如果err本身看起来像一个API响应（如包含id, choices等）
-          if (err && err.id && err.choices && Array.isArray(err.choices)) {
-            console.log('在POST错误对象本身发现有效的API响应:', err);
-            resolve({ data: err });
-            return;
-          }
-          
-          console.error('所有API尝试均失败:', err);
-          // 不再自动切换到本地模式，而是将错误传递给调用者
-          reject(err);
-        });
+        },
+        timeout: 60000 // 1分钟超时
       });
-    });
+
+      console.log('API请求成功:', response);
+      
+      return {
+        data: {
+          choices: [{
+            message: {
+              content: response.data.choices[0].message.content
+            }
+          }]
+        }
+      };
+    } 
+    catch (err) {
+      //console.error('API调用失败:', err);
+      
+      // 检查错误对象中是否包含有效的响应数据
+      if (err.choices) {
+        //console.log('在错误响应中发现有效数据:', err.response.data);
+        return {
+          data: {
+            choices: [{
+              message: {
+                content: err.choices[0].message.content
+              }
+            }]
+          }
+        };
+      }
+      
+      // 检查错误对象本身是否包含有效数据
+      if (err.data && err.data.choices) {
+        console.log('在错误对象中发现有效数据:', err.data);
+        return {
+          data: {
+            choices: [{
+              message: {
+                content: err.data.choices[0].message.content
+              }
+            }]
+          }
+        };
+      }
+
+      throw err;
+    }
   }
 }; 
